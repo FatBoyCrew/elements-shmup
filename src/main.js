@@ -36,8 +36,8 @@ var reset = function () {
     radius: rand.range(50, 60),
     dx: 0,
     dy: 0,
-    maxdx: 1,
-    maxdy: 1,
+    maxdx: 200,
+    maxdy: 200,
     color: rand.pick(colors)
   };
 };
@@ -84,23 +84,22 @@ kd.SPACE.up(function () {
 
 kd.UP.down(function () {
   console.log('UP');
-  console.log(player.dy);
-  player.dy = Math.min(player.dy - 10, player.maxdy);
+  player.dy = Math.max(player.dy - 10, -player.maxdy);
 });
 
 kd.DOWN.down(function () {
   console.log('DOWN');
-  player.dy = Math.max(player.dy + 10, player.maxdy);
+  player.dy = Math.min(player.dy + 10, player.maxdy);
 });
 
 kd.LEFT.down(function () {
   console.log('LEFT');
-  player.dx = Math.min(player.dx - 10, player.maxdx);
+  player.dx = Math.max(player.dx - 10, -player.maxdx);
 });
 
 kd.RIGHT.down(function () {
   console.log('RIGHT');
-  player.dx = Math.max(player.dx + 10, player.maxdx);
+  player.dx = Math.min(player.dx + 10, player.maxdx);
 });
 
 kd.ESC.up(function () {

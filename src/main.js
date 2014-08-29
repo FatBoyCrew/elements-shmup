@@ -1,6 +1,6 @@
-var raf = require('./raf');
-var rand = require('./rng')();
-var kd = require('./keydrown');
+var raf = require('./lib/raf');
+var rand = require('./lib/rng')();
+var kd = require('./lib/keydrown');
 
 var canvas = document.querySelector('#game');
 var ctx = canvas.getContext('2d');

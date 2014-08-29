@@ -1,6 +1,7 @@
 var raf = require('./modules/raf');
 var rand = require('./modules/rng')();
 var kd = require('./modules/keydrown');
+var jsfxr = require('./modules/jsfxr');
 
 var canvas = document.querySelector('#game');
 var ctx = canvas.getContext('2d');
@@ -79,6 +80,8 @@ raf.start(function (elapsed) {
 kd.SPACE.up(function () {
   console.log('SPACE');
 
+  jsfxr.playSound([0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5]);
+
   player.color = rand.pick(colors);
 });
 
@@ -104,5 +107,8 @@ kd.RIGHT.down(function () {
 
 kd.ESC.up(function () {
   console.log('ESC');
+
+  jsfxr.playSound([3,,0.3708,0.5822,0.3851,0.0584,,-0.0268,,,,-0.0749,0.7624,,,,,,1,,,,,0.5]);
+
   reset();
 });

@@ -69,7 +69,7 @@ raf.start(function (elapsed) {
   ctx.fill();
 });
 
-kd.SPACE.down(function () {
+kd.SPACE.up(function () {
   console.log('SPACE');
 
   player.color = rand.pick(colors);
@@ -95,7 +95,7 @@ kd.RIGHT.down(function () {
   player.dx += 50;
 });
 
-kd.ESC.down(function () {
+kd.ESC.up(function () {
   console.log('ESC');
   reset();
 });

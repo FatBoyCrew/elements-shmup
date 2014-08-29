@@ -9,6 +9,9 @@ var colors = [
   '#0074D9', '#2ECC40', '#FF4136', '#FFDC00'
 ];
 
+var W = canvas.width;
+var H = canvas.height;
+
 var background;
 var player;
 
@@ -18,21 +21,23 @@ var reset = function () {
   for (var i = 0; i < 3; i++) {
     for (var j = 0; j < 3; j++) {
       background.push({
-        x: i * canvas.width / 3,
-        y: j * canvas.height / 3,
-        width: canvas.width / 3,
-        height: canvas.height / 3,
+        x: i * W / 3,
+        y: j * H / 3,
+        width: W / 3,
+        height: H / 3,
         color: rand.pick(colors)
       });
     }
   }
 
   player = {
-    x: canvas.width/2,
-    y: rand.int(canvas.height / 2),
+    x: W / 2,
+    y: rand.int(H / 2),
     radius: rand.range(50, 60),
-    dx: rand.range(-100, 100),
+    dx: 0,
     dy: 0,
+    maxdx: 1,
+    maxdy: 1,
     color: rand.pick(colors)
   };
 };
@@ -43,7 +48,7 @@ raf.start(function (elapsed) {
   kd.tick();
 
   // Clear the screen
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, W, H);
 
   background.forEach(function (bg) {
     ctx.fillStyle = bg.color;
@@ -54,8 +59,8 @@ raf.start(function (elapsed) {
   // player.dy += elapsed * 1500;
 
   // Handle collision against the canvas's edges
-  if (player.x - player.radius < 0 && player.dx < 0 || player.x + player.radius > canvas.width && player.dx > 0) player.dx = -player.dx * 0.7;
-  if (player.y - player.radius < 0 && player.dy < 0 || player.y +  player.radius > canvas.height && player.dy > 0) player.dy = -player.dy * 0.7;
+  if (player.x - player.radius < 0 && player.dx < 0 || player.x + player.radius > W && player.dx > 0) player.dx = -player.dx * 0.4;
+  if (player.y - player.radius < 0 && player.dy < 0 || player.y +  player.radius > H && player.dy > 0) player.dy = -player.dy * 0.4;
 
   // Update player position
   player.x += player.dx * elapsed;
@@ -79,22 +84,23 @@ kd.SPACE.up(function () {
 
 kd.UP.down(function () {
   console.log('UP');
-  player.dy -= 20;
+  console.log(player.dy);
+  player.dy = Math.min(player.dy - 10, player.maxdy);
 });
 
 kd.DOWN.down(function () {
   console.log('DOWN');
-  player.dy += 20;
+  player.dy = Math.max(player.dy + 10, player.maxdy);
 });
 
 kd.LEFT.down(function () {
   console.log('LEFT');
-  player.dx -= 20;
+  player.dx = Math.min(player.dx - 10, player.maxdx);
 });
 
 kd.RIGHT.down(function () {
   console.log('RIGHT');
-  player.dx += 50;
+  player.dx = Math.max(player.dx + 10, player.maxdx);
 });
 
 kd.ESC.up(function () {

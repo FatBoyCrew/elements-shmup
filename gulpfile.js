@@ -81,7 +81,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('lint', function() {
-  return gulp.src(['*.js', 'src/**/*.js'])
+  return gulp.src(['*.js', 'src/**/*.js', '!src/modules/*.js'])
     .pipe(eslint())
     .pipe(eslint.format());
 });

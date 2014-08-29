@@ -23,3 +23,6 @@ https://fatboycrew.github.io/elements-shmup/
 ## TODO
 
 - Cap both x and y moves, so that diagonal moves cannot be faster
+- Less naive color collision detection
+- More sound
+- Level generation

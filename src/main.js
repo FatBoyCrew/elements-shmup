@@ -67,6 +67,8 @@ raf.start(function (elapsed) {
   ctx.closePath();
   ctx.fillStyle = player.color;
   ctx.fill();
+  ctx.fillRect(player.x - player.radius, player.y, player.radius, player.radius);
+  ctx.fillRect(player.x, player.y, player.radius, player.radius);
 });
 
 kd.SPACE.up(function () {

@@ -2,7 +2,6 @@ var program = require('commander');
 var browserify = require('browserify');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
-var path = require('path');
 var rimraf = require('rimraf');
 
 var gulp = require('gulp');

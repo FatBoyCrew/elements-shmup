@@ -13,6 +13,15 @@ var colors = [
 var W = canvas.width;
 var H = canvas.height;
 
+var playerColor = {
+  r: 0,
+  g: 0,
+  b: 0,
+  a : 0
+};
+
+var playerColorAmount;
+
 var background;
 var player;
 
@@ -65,19 +74,7 @@ var getPointColor = function (x, y) {
   };
 };
 
-var colorCollision = function () {
-  var playerColor = getPointColor(player.x + player.radius / 2, player.y + player.radius / 2);
-  var playerColorAmount = getColorAmount(player.x - player.radius - 10, player.y - player.radius - 10, player.radius * 2 + 20, player.radius * 2 + 20, playerColor);
 
-  if (playerColorAmount < 15000) {
-    ctx.globalAlpha = 0.8 / (1 + rand.range(0, 50) / 100);
-  }
-  else {
-    ctx.globalAlpha = 1;
-  }
-
-  console.log(playerColorAmount);
-};
 
 reset();
 
@@ -86,11 +83,23 @@ raf.start(function (elapsed) {
 
   // Clear the screen
   ctx.clearRect(0, 0, W, H);
+  ctx.globalAlpha = 1;
 
   background.forEach(function (bg) {
     ctx.fillStyle = bg.color;
     ctx.fillRect(bg.x, bg.y, bg.width, bg.height);
   });
+
+  playerColorAmount = getColorAmount(player.x - player.radius - 10, player.y - player.radius - 10, player.radius * 2 + 20, player.radius * 2 + 20, playerColor);
+
+  if (playerColorAmount < 10000) {
+    ctx.globalAlpha = 0.8 / (1 + rand.range(0, 50) / 100);
+  }
+  else {
+    ctx.globalAlpha = 1;
+  }
+
+  console.log(playerColorAmount);
 
   // Gravity
   // player.dy += elapsed * 1500;
@@ -112,8 +121,7 @@ raf.start(function (elapsed) {
   ctx.fillRect(player.x - player.radius, player.y, player.radius, player.radius);
   ctx.fillRect(player.x, player.y, player.radius, player.radius);
 
-
-  colorCollision();
+  playerColor = getPointColor(player.x + player.radius / 2, player.y + player.radius / 2);
 });
 
 kd.SPACE.down(function () {

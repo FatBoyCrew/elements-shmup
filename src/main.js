@@ -1,10 +1,13 @@
 var raf = require('./lib/raf');
 var rand = require('./lib/rng')();
 var kd = require('./lib/keydrown');
-var ArcadeAudio = require('./ArcadeAudio');
 
 var canvas = document.querySelector('#game');
 var ctx = canvas.getContext('2d');
+
+var ArcadeAudio = require('./ArcadeAudio');
+var ColorCollision = require('./ColorCollision')(ctx);
+
 
 ArcadeAudio.add('explosion', 1, [
   [3,,0.3708,0.5822,0.3851,0.0584,,-0.0268,,,,-0.0749,0.7624,,,,,,1,,,,,0.5]
@@ -38,10 +41,10 @@ var reset = function () {
   background = [];
 
   for (var i = 0; i < 3; i++) {
-    for (var j = 0; j < 3; j++) {
+    for (var j = 0; j < 10; j++) {
       background.push({
         x: i * W / 3,
-        y: j * H / 3,
+        y: -j * H / 3,
         width: W / 3,
         height: H / 3,
         color: rand.pick(colors)
@@ -57,33 +60,10 @@ var reset = function () {
     dy: 0,
     maxdx: 200,
     maxdy: 200,
+    bounce: 0.4,
     color: rand.pick(colors)
   };
 };
-
-var getColorAmount = function (x, y, w, h, color) {
-  var pixels = ctx.getImageData(x, y, w, h);
-  var all = pixels.data.length;
-  var amount = 0;
-  for (var i = 0; i < all; i += 4) {
-    if (pixels.data[i] === color.r && pixels.data[i + 1] === color.g && pixels.data[i + 2] === color.b) {
-      amount++;
-    }
-  }
-  return amount;
-};
-
-var getPointColor = function (x, y) {
-  var pixel = ctx.getImageData(x, y, 1, 1);
-  return {
-    r: pixel.data[0],
-    g: pixel.data[1],
-    b: pixel.data[2],
-    a: pixel.data[3]
-  };
-};
-
-
 
 reset();
 
@@ -97,15 +77,17 @@ raf.start(function (elapsed) {
   background.forEach(function (bg) {
     ctx.fillStyle = bg.color;
     ctx.fillRect(bg.x, bg.y, bg.width, bg.height);
+    bg.y++;
+    if (bg.y + bg.height > H) {
+      delete bg;
+    }
   });
 
-  playerColorAmount = getColorAmount(player.x - player.radius - 10, player.y - player.radius - 10, player.radius * 2 + 20, player.radius * 2 + 20, playerColor);
-
-  console.log(playerColorAmount);
+  playerColorAmount = ColorCollision.getColorAmount(player.x - player.radius, player.y - player.radius, player.radius * 2, player.radius * 2, playerColor);
 
   // Handle collision against the canvas's edges
-  if (player.x - player.radius < 0 && player.dx < 0 || player.x + player.radius > W && player.dx > 0) player.dx = -player.dx * 0.4;
-  if (player.y - player.radius < 0 && player.dy < 0 || player.y +  player.radius > H && player.dy > 0) player.dy = -player.dy * 0.4;
+  if (player.x - player.radius < 0 && player.dx < 0 || player.x + player.radius > W && player.dx > 0) player.dx = -player.dx * player.bounce;
+  if (player.y - player.radius < 0 && player.dy < 0 || player.y +  player.radius > H && player.dy > 0) player.dy = -player.dy * player.bounce;
 
   // Update player position
   player.x += player.dx * elapsed;
@@ -120,9 +102,10 @@ raf.start(function (elapsed) {
   ctx.fillRect(player.x - player.radius, player.y, player.radius, player.radius);
   ctx.fillRect(player.x, player.y, player.radius, player.radius);
 
-  playerColor = getPointColor(player.x + player.radius / 2, player.y + player.radius / 2);
+  playerColor = ColorCollision.getPointColor(player.x + player.radius / 2, player.y + player.radius / 2);
+  var playerColorMax = ColorCollision.getColorAmount(player.x - player.radius, player.y - player.radius, player.radius * 2, player.radius * 2, playerColor);
 
-  if (playerColorAmount < 10000) {
+  if (playerColorAmount < playerColorMax - 1000) {
     ctx.globalAlpha = 0.8 / (1 + rand.range(0, 50) / 100);
     ctx.beginPath();
     ctx.arc(player.x, player.y, player.radius / 3, 0, Math.PI * 2, true);
@@ -132,45 +115,36 @@ raf.start(function (elapsed) {
   }
 });
 
-kd.SPACE.down(function () {
-  ctx.globalAlpha = 0.8 / (1 + rand.range(0, 50) / 100);
-});
+/*
+ * Keyboard controls.
+ */
 
-kd.SPACE.up(function () {
-  console.log('SPACE');
-
-  ctx.globalAlpha = 1;
-
-  //jsfxr.playSound([0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5]);
-  ArcadeAudio.play('powerup');
-
-  player.color = rand.pick(colors);
-});
+// Player moves.
 
 kd.UP.down(function () {
-  console.log('UP');
   player.dy = Math.max(player.dy - 10, -player.maxdy);
 });
 
 kd.DOWN.down(function () {
-  console.log('DOWN');
   player.dy = Math.min(player.dy + 10, player.maxdy);
 });
 
 kd.LEFT.down(function () {
-  console.log('LEFT');
   player.dx = Math.max(player.dx - 10, -player.maxdx);
 });
 
 kd.RIGHT.down(function () {
-  console.log('RIGHT');
   player.dx = Math.min(player.dx + 10, player.maxdx);
 });
 
-kd.ESC.up(function () {
-  console.log('ESC');
-  ArcadeAudio.play('explosion');
-  //jsfxr.playSound();
+// Other controls.
 
+kd.SPACE.up(function () {
+  ArcadeAudio.play('powerup');
+  player.color = rand.pick(colors);
+});
+
+kd.ESC.up(function () {
+  ArcadeAudio.play('explosion');
   reset();
 });

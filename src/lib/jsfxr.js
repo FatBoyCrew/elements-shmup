@@ -509,7 +509,4 @@ function playString(str) {
    playSound(params);
 }
 
-module.exports = {
-    playSound: playSound,
-    playString: playString
-};
+module.exports = window['jsfxr'];

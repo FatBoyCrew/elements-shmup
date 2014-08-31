@@ -80,7 +80,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('lint', function() {
-  return gulp.src(['*.js', 'src/**/*.js', '!src/modules/*.js'])
+  return gulp.src(['*.js', 'src/*.js', '!src/lib/*.js'])
     .pipe(eslint())
     .pipe(eslint.format());
 });
@@ -116,7 +116,7 @@ gulp.task('serve', ['build'], function () {
 
 // Deploy to GitHub Pages.
 gulp.task('deploy', function () {
-  gutil.log("Deploying to GitHub Pages");
+  gutil.log('Deploying to GitHub Pages');
 
   gulp.src('build/*')
     .pipe(deploy({

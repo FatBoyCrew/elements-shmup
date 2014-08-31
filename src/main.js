@@ -1,10 +1,13 @@
-var raf = require('./modules/raf');
-var rand = require('./modules/rng')();
-var kd = require('./modules/keydrown');
-var jsfxr = require('./modules/jsfxr');
+var raf = require('./lib/raf');
+var rand = require('./lib/rng')();
+var kd = require('./lib/keydrown');
+var ArcadeAudio = require('./ArcadeAudio');
 
 var canvas = document.querySelector('#game');
 var ctx = canvas.getContext('2d');
+
+ArcadeAudio.add('explosion', 1, [[3,,0.3708,0.5822,0.3851,0.0584,,-0.0268,,,,-0.0749,0.7624,,,,,,1,,,,,0.5]]);
+ArcadeAudio.add('powerup', 1, [[0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5]]);
 
 var colors = [
   '#0074D9', '#2ECC40', '#FF4136', '#FFDC00'
@@ -133,7 +136,8 @@ kd.SPACE.up(function () {
 
   ctx.globalAlpha = 1;
 
-  jsfxr.playSound([0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5]);
+  //jsfxr.playSound([0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5]);
+  ArcadeAudio.play('powerup');
 
   player.color = rand.pick(colors);
 });
@@ -160,8 +164,8 @@ kd.RIGHT.down(function () {
 
 kd.ESC.up(function () {
   console.log('ESC');
-
-  jsfxr.playSound([3,,0.3708,0.5822,0.3851,0.0584,,-0.0268,,,,-0.0749,0.7624,,,,,,1,,,,,0.5]);
+  ArcadeAudio.play('explosion');
+  //jsfxr.playSound();
 
   reset();
 });

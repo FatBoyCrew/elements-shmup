@@ -115,7 +115,7 @@ gulp.task('serve', ['build'], function () {
 });
 
 // Deploy to GitHub Pages.
-gulp.task('deploy', function () {
+gulp.task('deploy', ['build'], function () {
   gutil.log('Deploying to GitHub Pages');
 
   gulp.src('build/*')

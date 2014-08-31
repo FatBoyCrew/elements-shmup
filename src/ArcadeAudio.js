@@ -20,7 +20,6 @@ var add = function(key, count, settings) {
 
 var play = function(key) {
   var sound = sounds[key];
-  console.log(sounds);
   var soundData = sound.length > 1 ? sound[Math.floor(Math.random() * sound.length)] : sound[0];
   soundData.pool[soundData.tick].play();
   soundData.tick = soundData.tick < soundData.count - 1 ? soundData.tick + 1 : 0;

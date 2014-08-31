@@ -101,17 +101,7 @@ raf.start(function (elapsed) {
 
   playerColorAmount = getColorAmount(player.x - player.radius - 10, player.y - player.radius - 10, player.radius * 2 + 20, player.radius * 2 + 20, playerColor);
 
-  if (playerColorAmount < 10000) {
-    ctx.globalAlpha = 0.8 / (1 + rand.range(0, 50) / 100);
-  }
-  else {
-    ctx.globalAlpha = 1;
-  }
-
   console.log(playerColorAmount);
-
-  // Gravity
-  // player.dy += elapsed * 1500;
 
   // Handle collision against the canvas's edges
   if (player.x - player.radius < 0 && player.dx < 0 || player.x + player.radius > W && player.dx > 0) player.dx = -player.dx * 0.4;
@@ -131,6 +121,15 @@ raf.start(function (elapsed) {
   ctx.fillRect(player.x, player.y, player.radius, player.radius);
 
   playerColor = getPointColor(player.x + player.radius / 2, player.y + player.radius / 2);
+
+  if (playerColorAmount < 10000) {
+    ctx.globalAlpha = 0.8 / (1 + rand.range(0, 50) / 100);
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, player.radius / 3, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.fillStyle = 'black';
+    ctx.fill();
+  }
 });
 
 kd.SPACE.down(function () {

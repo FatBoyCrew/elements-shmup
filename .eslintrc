@@ -16,6 +16,7 @@
     // Possible errors
     "no-comma-dangle": 0,
     "no-use-before-define": [2, "nofunc"],
+    "no-sparse-arrays": false,
     // Strict mode
     "strict": 0
   }

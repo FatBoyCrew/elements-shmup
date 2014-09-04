@@ -29,12 +29,17 @@ var playerColor = {
 };
 
 var playerColorAmount;
-var farthestBackground = 0;
+var farthestBackground;
+var score;
+var life;
 
 var background;
 var player;
 
 var reset = function () {
+  farthestBackground = 0;
+  score = 0;
+  life = 100;
   background = [];
 
   for (var i = 0; i < 3; i++) {
@@ -79,6 +84,7 @@ raf.start(function (elapsed) {
     if (bg.y > H) {
       bg.y = farthestBackground;
       bg.color = rand.pick(colors);
+      score+=1;
     }
   });
 
@@ -112,7 +118,23 @@ raf.start(function (elapsed) {
     ctx.fillStyle = 'black';
     ctx.fill();
     //ArcadeAudio.play('alarm');
+    life = Math.max(life - 1, 0);
   }
+  else {
+    life = Math.min(100, life + 1);
+  }
+
+  if (life === 0) {
+    // reset();
+    // ArcadeAudio.play('explosion');
+  }
+
+  ctx.globalAlpha = 1;
+  ctx.font = '30px Arial';
+  ctx.fillStyle = '#fff';
+  ctx.fillText(score, W - 50, 30);
+
+  ctx.fillText(life, 20, 30);
 });
 
 /*
@@ -165,6 +187,6 @@ kd.SPACE.up(function () {
 });
 
 kd.ESC.up(function () {
-  ArcadeAudio.play('explosion');
   reset();
+  ArcadeAudio.play('explosion');
 });

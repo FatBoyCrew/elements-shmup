@@ -137,6 +137,26 @@ kd.RIGHT.down(function () {
   player.dx = Math.min(player.dx + 10, player.maxdx);
 });
 
+kd.Z.up(function () {
+  player.color = '#0074D9';
+  ArcadeAudio.play('powerup');
+});
+
+kd.S.up(function () {
+  player.color = '#FF4136';
+  ArcadeAudio.play('powerup');
+});
+
+kd.Q.up(function () {
+  player.color = '#FFDC00';
+  ArcadeAudio.play('powerup');
+});
+
+kd.D.up(function () {
+  player.color = '#2ECC40';
+  ArcadeAudio.play('powerup');
+});
+
 // Other controls.
 
 kd.SPACE.up(function () {

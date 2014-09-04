@@ -132,9 +132,9 @@ raf.start(function (elapsed) {
   ctx.globalAlpha = 1;
   ctx.font = '30px Arial';
   ctx.fillStyle = '#fff';
-  ctx.fillText(score, W - 50, 30);
+  ctx.fillText('Score: ' + score, W - 130, 30);
 
-  ctx.fillText(life, 20, 30);
+  ctx.fillText('Life: ' + life, 20, 30);
 });
 
 /*

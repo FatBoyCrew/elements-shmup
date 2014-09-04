@@ -81,7 +81,6 @@ raf.start(function (elapsed) {
       bg.color = rand.pick(colors);
     }
   });
-  console.log(background.length);
 
   playerColorAmount = ColorCollision.getColorAmount(player.x - player.radius, player.y - player.radius, player.radius * 2, player.radius * 2, playerColor);
 

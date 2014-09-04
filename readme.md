@@ -26,3 +26,11 @@ https://fatboycrew.github.io/elements-shmup/
 - Less naive color collision detection
 - More sound
 - Level generation
+- ZSQD -> WASD
+
+## Kudos
+
+- [Keydrown](https://jeremyckahn.github.io/keydrown/)
+- [microjs](http://microjs.com/)
+- [jsfxr](https://github.com/mneubrand/jsfxr)
+- [JS13KGames Boilerplate](https://github.com/ooflorent/js13k-boilerplate)

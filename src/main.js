@@ -7,16 +7,12 @@ var ctx = canvas.getContext('2d');
 
 var ArcadeAudio = require('./ArcadeAudio');
 var ColorCollision = require('./ColorCollision')(ctx);
+var sounds = require('./sounds');
 
 
-ArcadeAudio.add('explosion', 1, [
-  [3,,0.3708,0.5822,0.3851,0.0584,,-0.0268,,,,-0.0749,0.7624,,,,,,1,,,,,0.5]
-]);
-ArcadeAudio.add('powerup', 1, [
-  [0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5],
-  [0,,0.3739,,0.2617,0.3589,,0.2292,,,,,,0.4031,,,,,1,,,0.0548,,0.5],
-  [0,,0.3634,,0.1398,0.577,,0.1121,,,,,,0.5917,,,,,1,,,0.2916,,0.5],
-]);
+ArcadeAudio.add('explosion', 5, sounds.explosion);
+ArcadeAudio.add('moving', 1, [sounds.random.engine]);
+ArcadeAudio.add('powerup', 1, sounds.powerup);
 
 var colors = [
   '#0074D9', '#2ECC40', '#FF4136', '#FFDC00'
@@ -123,18 +119,22 @@ raf.start(function (elapsed) {
 
 kd.UP.down(function () {
   player.dy = Math.max(player.dy - 10, -player.maxdy);
+  ArcadeAudio.play('moving');
 });
 
 kd.DOWN.down(function () {
   player.dy = Math.min(player.dy + 10, player.maxdy);
+  ArcadeAudio.play('moving');
 });
 
 kd.LEFT.down(function () {
   player.dx = Math.max(player.dx - 10, -player.maxdx);
+  ArcadeAudio.play('moving');
 });
 
 kd.RIGHT.down(function () {
   player.dx = Math.min(player.dx + 10, player.maxdx);
+  ArcadeAudio.play('moving');
 });
 
 // Other controls.

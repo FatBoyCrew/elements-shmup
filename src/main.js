@@ -11,8 +11,8 @@ var sounds = require('./sounds');
 
 
 ArcadeAudio.add('explosion', 5, sounds.explosion);
-ArcadeAudio.add('moving', 1, [sounds.random.engine]);
 ArcadeAudio.add('powerup', 1, sounds.powerup);
+ArcadeAudio.add('alarm', 1, [sounds.random.alarm]);
 
 var colors = [
   '#0074D9', '#2ECC40', '#FF4136', '#FFDC00'
@@ -29,6 +29,7 @@ var playerColor = {
 };
 
 var playerColorAmount;
+var farthestBackground = 0;
 
 var background;
 var player;
@@ -37,10 +38,10 @@ var reset = function () {
   background = [];
 
   for (var i = 0; i < 3; i++) {
-    for (var j = 0; j < 10; j++) {
+    for (var j = 0; j < 5; j++) {
       background.push({
         x: i * W / 3,
-        y: -j * H / 3,
+        y: H - j * H / 3,
         width: W / 3,
         height: H / 3,
         color: rand.pick(colors)
@@ -74,10 +75,13 @@ raf.start(function (elapsed) {
     ctx.fillStyle = bg.color;
     ctx.fillRect(bg.x, bg.y, bg.width, bg.height);
     bg.y++;
-    if (bg.y + bg.height > H) {
-      delete bg;
+    farthestBackground = Math.min(farthestBackground, bg.y);
+    if (bg.y > H) {
+      bg.y = farthestBackground;
+      bg.color = rand.pick(colors);
     }
   });
+  console.log(background.length);
 
   playerColorAmount = ColorCollision.getColorAmount(player.x - player.radius, player.y - player.radius, player.radius * 2, player.radius * 2, playerColor);
 
@@ -108,6 +112,7 @@ raf.start(function (elapsed) {
     ctx.closePath();
     ctx.fillStyle = 'black';
     ctx.fill();
+    //ArcadeAudio.play('alarm');
   }
 });
 
@@ -119,22 +124,18 @@ raf.start(function (elapsed) {
 
 kd.UP.down(function () {
   player.dy = Math.max(player.dy - 10, -player.maxdy);
-  ArcadeAudio.play('moving');
 });
 
 kd.DOWN.down(function () {
   player.dy = Math.min(player.dy + 10, player.maxdy);
-  ArcadeAudio.play('moving');
 });
 
 kd.LEFT.down(function () {
   player.dx = Math.max(player.dx - 10, -player.maxdx);
-  ArcadeAudio.play('moving');
 });
 
 kd.RIGHT.down(function () {
   player.dx = Math.min(player.dx + 10, player.maxdx);
-  ArcadeAudio.play('moving');
 });
 
 // Other controls.

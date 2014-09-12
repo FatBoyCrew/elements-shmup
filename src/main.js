@@ -9,6 +9,8 @@ var ArcadeAudio = require('./ArcadeAudio');
 var ColorCollision = require('./ColorCollision')(ctx);
 var sounds = require('./sounds');
 
+var draw = require('./draw')(ctx);
+
 
 ArcadeAudio.add('explosion', 5, sounds.explosion);
 ArcadeAudio.add('powerup', 1, sounds.powerup);
@@ -135,6 +137,8 @@ raf.start(function (elapsed) {
   ctx.fillText('Score: ' + score, W - 130, 30);
 
   ctx.fillText('Life: ' + life, 20, 30);
+
+  draw.heart(75, 40);
 });
 
 /*

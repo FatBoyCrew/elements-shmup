@@ -105,9 +105,11 @@ raf.start(function (elapsed) {
   ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2, true);
   ctx.closePath();
   ctx.fillStyle = player.color;
+  ctx.strokeStyle = 'black';
   ctx.fill();
   ctx.fillRect(player.x - player.radius, player.y, player.radius, player.radius);
   ctx.fillRect(player.x, player.y, player.radius, player.radius);
+  ctx.stroke();
 
   playerColor = ColorCollision.getPointColor(player.x + player.radius / 2, player.y + player.radius / 2);
   var playerColorMax = ColorCollision.getColorAmount(player.x - player.radius, player.y - player.radius, player.radius * 2, player.radius * 2, playerColor);

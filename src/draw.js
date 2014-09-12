@@ -1,26 +1,23 @@
 module.exports = function (ctx) {
   return {
-    heart: function (x, y, width, height) {
-      x = 75; y = 40; width= 110;
-      x = 300; y = 200; width= 110;
-
+    heart: function (x, y, width, height, color) {
       var leftmost = x - width / 2;
       var rightmost = x + width / 2;
-      var topY = y - 15;
-      var middleY = y + 22.5;
-      var bottomY = y + 80;
-      // Quadratric curves example
+      var topY = y - height / 5;
+      var middleY = y + height / 5;
+      var bottomY = y + (4 * height) / 5;
+
       ctx.beginPath();
-      ctx.moveTo(x,y);
-      // first half
-      ctx.bezierCurveTo(x, y, x - 5, topY, x - 25, topY);
+      ctx.moveTo(x, y);
+
+      ctx.bezierCurveTo(x, y, x - width / 20, topY, x - width / 4, topY);
       ctx.bezierCurveTo(leftmost, topY, leftmost, middleY, leftmost, middleY);
-      ctx.bezierCurveTo(leftmost, y + 40, x - 35, y + 62, x, bottomY);
-      // secund half
-      ctx.bezierCurveTo(x + 35, y + 62, rightmost, y + 40, rightmost, middleY);
-      ctx.bezierCurveTo(rightmost, middleY, rightmost, topY, x + 25, topY);
-      ctx.bezierCurveTo(x + 10, topY, x, y, x, y);
-      ctx.fillStyle = 'red';
+      ctx.bezierCurveTo(leftmost, y + height / 2.5, x - width / 3, y + height / 1.5, x, bottomY);
+
+      ctx.bezierCurveTo(x + width / 3, y + height / 1.5, rightmost, y + height / 2.5, rightmost, middleY);
+      ctx.bezierCurveTo(rightmost, middleY, rightmost, topY, x + width / 4, topY);
+      ctx.bezierCurveTo(x + width / 20, topY, x, y, x, y);
+      ctx.fillStyle = color;
       ctx.fill();
     }
   };

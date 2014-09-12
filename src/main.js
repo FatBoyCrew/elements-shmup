@@ -138,7 +138,7 @@ raf.start(function (elapsed) {
 
   ctx.fillText('Life: ' + life, 20, 30);
 
-  draw.heart(75, 40, 100, 90);
+  draw.heart(75, 40, 100, 100, 'yellow');
 });
 
 /*
